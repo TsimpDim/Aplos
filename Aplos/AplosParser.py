@@ -20,8 +20,7 @@ class AplosParser:
             text_lines = text.replace(' ','').split(delimeter) # Remove whitespace
             text_lines = list(filter(None, text_lines)) # Filter empty lines
 
-            # Changed so it fails
-            return text_lines[1:]
+            return text_lines
 
     def __init__(self, filename=None, text=None, delimeter='\n'):
 
