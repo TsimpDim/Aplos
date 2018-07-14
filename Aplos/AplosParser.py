@@ -1,4 +1,4 @@
-import exceptions as ex
+from .exceptions import *
 import warnings
 import re as r
 
@@ -34,7 +34,7 @@ class AplosParser:
 
             self.lp_lines = self.__read_text_lines(text,delimeter)
         else:
-            raise ex.MissingArguementsException('No \'text\' or \'filename\' arguement specified for initialization')
+            raise MissingArguementsException('No \'text\' or \'filename\' arguement specified for initialization')
 
         if self.lp_lines == []:
             warnings.warn('LP lines are empty, no data is available', RuntimeWarning)
