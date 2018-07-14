@@ -48,12 +48,21 @@ s.t. x1+2x2<=9
 
 End'''
 
-parser_txt = Aplos.AplosParser(text=text_lp)
+parser = Aplos.AplosParser(text=text_lp)
 
 # From a string with a custom delimeter
-text = '''Max 3x1 +2x2,s.t. x1+2x2<=9,2x1+5x2<=4,End'''
+text = '''Max 3x1 +2x3 + x5,s.t. x1+2x2<=9,2x1+5x2<=4,End'''
 
 parser = AplosParser(text=text, delimeter=',')
+
+
+# Getting the variables
+variables_of_line = parser.get_vars(line_idx=0)
+# variables_of_line = {"existing":['x1','x3'], "extended":['x1','x2','x3','x4','x5']}
+variables_all = parser.get_vars()
+# variables_all = ['x1','x2','x3','x4','x5']
 ```
+
+
 *As the project continues, the 'usage' section will get updated and eventually (hopefully) be moved in a documentation file/page altogether.*
 
