@@ -8,4 +8,4 @@ install:
   - python setup.py install
 
 script:
-  - pytest -v --tb=short
+  - pytest -v
