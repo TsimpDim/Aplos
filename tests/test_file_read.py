@@ -1,4 +1,4 @@
-from Aplos import AplosParser, exceptions
+from Aplos import *
 import os
 import pytest
 
