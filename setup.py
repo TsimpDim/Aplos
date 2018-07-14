@@ -1,5 +1,5 @@
 
-from distutils.core import setup
+from setuptools import setup,find_packages
 
 setup(name='Aplos',
       version='1.0',
@@ -7,4 +7,5 @@ setup(name='Aplos',
       author='Tsimpitas Dimitris',
       author_email='dimitristsimpitas@gmail.com',
       url='https://www.github.com/TsimpDim/Aplos',
+      packages=find_packages()
      )
