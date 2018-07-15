@@ -27,9 +27,9 @@ def test_empty_text():
     with pytest.warns(RuntimeWarning):
         parser = AplosParser(text='')
 
-def test_text_no_arguements():
+def test_text_no_arguments():
 
-    with pytest.raises(exceptions.MissingArguementsException):
+    with pytest.raises(exceptions.MissingArgumentsException):
         parser = AplosParser()    
 
 def test_text_custom_delimeter_comma():

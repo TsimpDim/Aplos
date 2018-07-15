@@ -41,7 +41,7 @@ def test_open_file_no_lines():
 
     assert parser.lp_lines == res
 
-def test_open_file_no_arguements():
+def test_open_file_no_arguments():
 
-    with pytest.raises(exceptions.MissingArguementsException):
+    with pytest.raises(exceptions.MissingArgumentsException):
         parser = AplosParser()

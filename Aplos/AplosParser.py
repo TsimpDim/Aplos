@@ -125,8 +125,8 @@ class AplosParser:
                 self.constr_end_idx = i + 1 # Since we start the loop from the 2nd element
                 self.lp_lines[:] = self.lp_lines[:self.constr_end_idx] # Remove every line after (and including) the one containing the END statement
                 break
-            else: # If for loop doesn't break
-                self.error_list.append('No END statement found')    
+        else: # If for loop doesn't break
+            self.error_list.append('No END statement found')    
         
         # Missing constraint types
         for line in self.lp_lines[1:]:
