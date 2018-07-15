@@ -1,5 +1,2 @@
-class MissingArguementsException(Exception):
-    pass
-
-class LPErrorException(Exception):
+class MissingArgumentsException(Exception):
     pass
