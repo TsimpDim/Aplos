@@ -38,7 +38,7 @@ class AplosParser:
         else:
             raise MissingArgumentsException('No \'text\' or \'filename\' argument specified for initialization')
 
-        if self.lp_lines == []:
+        if not self.lp_lines:
             warnings.warn('LP lines are empty, no data is available', RuntimeWarning)
 
     def get_vars(self, line_idx=None):
@@ -60,8 +60,7 @@ class AplosParser:
                 
                 returns the following dict:
 
-                {"existing":['x1','x3','x4'], "extended":['x1','x2','x3','x4']}
-            
+                {"existing":['x1','x3','x4'], "extended":['x1','x2','x3','x4']}   
         '''
 
 
@@ -92,9 +91,12 @@ class AplosParser:
             extended_list = []
 
             # Add missing variables
-            last_idx = int(var_list[-1][1:])
-            for i in range(1, last_idx+1):
-                extended_list.append('x' + str(i))
+            # If the list is empty that means there are no variables
+            # in the given line, hence the LP is faulty.
+            if var_list != []:
+                last_idx = int(var_list[-1][1:])
+                for i in range(1, last_idx+1):
+                    extended_list.append('x' + str(i))
 
 
             return {"existing":var_list, "extended":extended_list}
@@ -105,7 +107,10 @@ class AplosParser:
             
             It returns the error_list which contains
             messages with the errors'''
-    
+
+        if not self.lp_lines:
+            raise EmptyLPException('Given LP is empty. Can\'t detect errors')
+
         # Min/Max not specified
         if all(i not in self.lp_lines[0].lower() for i in ['min', 'max']):
             self.error_list.append('Min/Max is not specified for object function')
