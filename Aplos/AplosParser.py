@@ -107,6 +107,8 @@ class AplosParser:
             
             It returns the error_list which contains
             messages with the errors'''
+        
+        self.error_list = [] # Reset error_list
 
         if not self.lp_lines:
             raise EmptyLPException('Given LP is empty. Can\'t detect errors')
