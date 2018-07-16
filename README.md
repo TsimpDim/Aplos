@@ -1,4 +1,4 @@
-# Aplos
+# Aplos [![Build Status](https://travis-ci.org/TsimpDim/Aplos.svg?branch=master)](https://travis-ci.org/TsimpDim/Aplos) [![Coverage Status](https://coveralls.io/repos/github/TsimpDim/Aplos/badge.svg?branch=detect-errors-func)](https://coveralls.io/github/TsimpDim/Aplos?branch=detect-errors-func) 
 
 Aplos is a simple and elegant linear problem(LP) parser. It allows one to get all the information they need about any linear problem given with the correct syntax. You can read more about Linear Programming [here.](https://en.wikipedia.org/wiki/Linear_programming)
 
@@ -61,6 +61,12 @@ variables_of_line = parser.get_vars(line_idx=0)
 # variables_of_line = {"existing":['x1','x3'], "extended":['x1','x2','x3','x4','x5']}
 variables_all = parser.get_vars()
 # variables_all = ['x1','x2','x3','x4','x5']
+
+# Detect errors
+errors = parser.detect_errors() # set print_msg=True to print the full list of errors
+
+if not errors:
+	# your code
 ```
 
 
