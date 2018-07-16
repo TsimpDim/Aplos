@@ -1,0 +1,14 @@
+README.md
+setup.py
+Aplos/AplosParser.py
+Aplos/__init__.py
+Aplos/exceptions.py
+Aplos.egg-info/PKG-INFO
+Aplos.egg-info/SOURCES.txt
+Aplos.egg-info/dependency_links.txt
+Aplos.egg-info/top_level.txt
+tests/__init__.py
+tests/test_det_errors.py
+tests/test_file_read.py
+tests/test_get_vars.py
+tests/test_text_init.py
