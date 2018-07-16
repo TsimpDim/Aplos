@@ -106,7 +106,11 @@ class AplosParser:
             of the given LP. 
             
             It returns the error_list which contains
-            messages with the errors'''
+            messages with the errors
+            
+            An exception is thrown if the LP contains no lines
+            and a warning is raised if there are errors in the LP.
+        '''
         
         self.error_list = [] # Reset error_list
 
