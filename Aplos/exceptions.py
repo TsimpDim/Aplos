@@ -3,3 +3,6 @@ class MissingArgumentsException(Exception):
 
 class EmptyLPException(Exception):
     pass
+
+class LPErrorException(Exception):
+    pass
