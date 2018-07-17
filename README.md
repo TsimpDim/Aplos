@@ -66,7 +66,10 @@ variables_all = parser.get_vars()
 errors = parser.detect_errors() # set print_msg=True to print the full list of errors
 
 if not errors:
-	# your code
+    # Get dimensions
+	dimensions = parser.get_dimensions()
+    m = dimensions['m']
+    n = dimensions['n']
 ```
 
 
