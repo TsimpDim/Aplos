@@ -6,6 +6,8 @@ class AplosParser:
     lp_lines = []
     error_list = []
     constr_end_idx = -1
+    m = 0
+    n = 0
 
     def __read_file_lines(self, filename):
         '''Reads text file line by line'''
@@ -115,7 +117,7 @@ class AplosParser:
         self.error_list = [] # Reset error_list
 
         if not self.lp_lines:
-            raise EmptyLPException('Given LP is empty. Can\'t detect errors')
+            raise EmptyLPException("Given LP is empty. Can't detect errors")
 
         # Min/Max not specified
         if all(i not in self.lp_lines[0].lower() for i in ['min', 'max']):
@@ -174,3 +176,34 @@ class AplosParser:
             warnings.warn('Given LP contains syntax problems.', RuntimeWarning)
 
         return self.error_list
+
+    def get_dimensions(self):
+        '''This function returns the dimensions of the problem
+           where m = the number of constraints and 
+           n = the number of variables.
+           
+           It returns a dict containing those two values.
+        ''' 
+
+        if not self.lp_lines:
+            raise EmptyLPException("Given LP is empty. Can't get dimensions")
+
+        # By checking if constr_end_idx != -1 we can be sure that the user has 
+        # ran detect_errors() first.
+        if not self.error_list and self.constr_end_idx != -1:
+
+            # We subtract 1 from m because
+            # we don't want to count the object function.
+            # We DON'T care about the 'END' line because
+            # we can be sure that it will be removed from detect_errors()
+            self.m = len(self.lp_lines) - 1
+            self.n = len(self.get_vars())
+
+            return {'m':self.m, 'n':self.n}
+
+        elif not self.error_list and self.constr_end_idx == -1:
+            raise LPErrorException("Given LP may contain errors. Search for errors first.")
+
+        else:
+            raise LPErrorException("Given LP contains errors. Can't get dimensions")
+
