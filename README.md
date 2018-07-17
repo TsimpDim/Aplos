@@ -67,7 +67,7 @@ errors = parser.detect_errors() # set print_msg=True to print the full list of e
 
 if not errors:
     # Get dimensions
-	dimensions = parser.get_dimensions()
+    dimensions = parser.get_dimensions()
     m = dimensions['m']
     n = dimensions['n']
 ```
