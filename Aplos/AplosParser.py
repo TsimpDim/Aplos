@@ -261,6 +261,9 @@ class AplosParser:
             to the given matrix argument given.
 
             i.e get_matrix(matrix='A') returns the matrix 'A' and so on
+
+            Eqin -- '<=': -1 | '>=' : 1 | '=' : 0
+            MinMax -- 'max':1 | 'min':-1
         '''
 
         # Make sure the problem can be parsed with our mind
