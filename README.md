@@ -70,6 +70,14 @@ if not errors:
     dimensions = parser.get_dimensions()
     m = dimensions['m']
     n = dimensions['n']
+
+    # Get any matrix (A,b,c,Eqin or MinMax)
+    # Eqin and MinMax have values corresponding to symbols
+    # Eqin -- '<=': -1 | '>=' : 1 | '=' : 0
+    # MinMax -- 'max':1 | 'min':-1
+    matrix_A = parser.get_matrix(matrix='a')
+    matrix_b = parser.get_matrix(matrix='B')
+    # And so on
 ```
 
 

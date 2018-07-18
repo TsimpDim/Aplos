@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from .exceptions import *
 import warnings
 import re as r
@@ -25,6 +27,53 @@ class AplosParser:
             text_lines = list(filter(None, text_lines)) # Filter empty lines
 
             return text_lines
+
+    def __process_factors(self, matrix, line, line_idx=None):
+        '''Τhis function is in charge of returning a list with the 
+            factors from the given line. 
+            
+            Firstly, it finds the variables that 
+            have 'hiden' factors, like 'x1' the hidden factor of which is 1,
+            and it adds those missing factors back.
+            
+            It then finds the factors and the index of the variables they belong
+            with two regex searches. 
+
+                i.e '1x1 + 3x3 - 2x4' 
+                    -> factor = [1,+3,-2]
+                    -> factor_pos = [1,3,4]
+            
+            After all that is said and done it fills up the given matrix
+            with the factors and returns it.
+
+            ! The function is built to run both for 1D and 2D lists.
+        '''
+
+        # Add missing factors
+        prob_fact = r.findall(r'(?<!\d)x\d+', line)
+        for fac in prob_fact:
+            line = line.replace(fac, '1' + fac)
+            
+        factors = r.findall(r'([-–+]?\d+)(?=x\d+)', line) # Different hyphens
+        factor_pos = r.findall(r'(?<=x)\d+', line) # Indices of variables
+
+        # Set values
+        for i,fact in enumerate(factors):
+            fac_pos = int(factor_pos[i]) - 1
+            number = int(fact.replace('+', '').replace('–', '-')) # Replace em-dash with en-dash
+
+            if isinstance(matrix[0], list):
+                matrix[line_idx][fac_pos] = number
+            else:
+                matrix[fac_pos] = number
+        
+        if isinstance(matrix[0], list):
+            for i,row in enumerate(matrix):
+                matrix[i] = [0 if el is None else el for el in row]
+        else:
+            matrix = [0 if el is None else el for el in matrix]
+
+        return matrix
 
     def __init__(self, filename=None, text=None, delimeter='\n'):
 
@@ -207,3 +256,68 @@ class AplosParser:
         else:
             raise LPErrorException("Given LP contains errors. Can't get dimensions")
 
+    def get_matrix(self, matrix=None):
+        '''This function returns the LP matrix corresponding
+            to the given matrix argument given.
+
+            i.e get_matrix(matrix='A') returns the matrix 'A' and so on
+        '''
+
+        # Make sure the problem can be parsed with our mind
+        # at ease about errors.
+        if not matrix:
+            raise MissingArgumentsException("Cannot calculate default 'None' matrix.\
+             Desired matrix must be specified via the 'matrix' keyword.")
+
+        if not self.lp_lines:
+            raise EmptyLPException("Given LP is empty. Can't calculate matrices.")
+
+        if not self.error_list and self.constr_end_idx == -1:
+            raise LPErrorException("Given LP may contain errors. Search for errors first.")
+        
+        elif self.error_list and self.constr_end_idx != -1:
+            raise LPErrorException("Given LP contains errors. Can't get dimensions")
+       
+        else:
+            # Make sure m & n are assigned to the parser object
+            if not self.m or not self.n : self.get_dimensions()
+
+            if matrix.lower() == 'a':
+                A = [[None]*self.n for _ in range(self.m)]
+                for i,line in enumerate(self.lp_lines[1:]):
+                    A = self.__process_factors(A, line, i)
+                
+                return A
+            
+            elif matrix.lower() == 'b':
+                b = [None]*self.m
+                for i,line in enumerate(self.lp_lines[1:]):
+                    b[i] = int(r.findall(r'(?<==)(\d+)', line)[0])
+
+                return b
+            
+            elif matrix.lower() == 'c':
+                c = [None]*self.n
+                line_to_proc = self.lp_lines[0].lower().replace('max', '').replace('min', '')
+                c = self.__process_factors(c, line_to_proc)
+
+                return c
+            
+            elif matrix.lower() == 'eqin':
+                Eqin = [None]*self.m
+                con_vals = {'<=': -1, '>=' : 1, '=' : 0}
+
+                for i,line in enumerate(self.lp_lines[1:]):
+                    con_type = r.findall(r'[><]?=', line)[0]
+                    Eqin[i] = con_vals[con_type]
+                
+                return Eqin
+
+            elif matrix.lower() == 'minmax':
+                MinMax = []
+                if 'min' in self.lp_lines[0].lower():
+                    MinMax.append(-1)
+                elif 'max' in self.lp_lines[0].lower():
+                    MinMax.append(1) 
+
+                return MinMax            
