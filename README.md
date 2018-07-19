@@ -1,4 +1,5 @@
-# Aplos [![Build Status](https://travis-ci.org/TsimpDim/Aplos.svg?branch=master)](https://travis-ci.org/TsimpDim/Aplos) [![Coverage Status](https://coveralls.io/repos/github/TsimpDim/Aplos/badge.svg?branch=detect-errors-func)](https://coveralls.io/github/TsimpDim/Aplos?branch=detect-errors-func) 
+# ![Aplos](res/aplos_logo.png?raw=true "Aplos")  
+[![Build Status](https://travis-ci.org/TsimpDim/Aplos.svg?branch=master)](https://travis-ci.org/TsimpDim/Aplos) [![Coverage Status](https://coveralls.io/repos/github/TsimpDim/Aplos/badge.svg?branch=detect-errors-func)](https://coveralls.io/github/TsimpDim/Aplos?branch=detect-errors-func) 
 
 Aplos is a simple and elegant linear problem(LP) parser. It allows one to get all the information they need about any linear problem given with the correct syntax. You can read more about Linear Programming [here.](https://en.wikipedia.org/wiki/Linear_programming)
 
@@ -77,6 +78,12 @@ if not errors:
     # MinMax -- 'max':1 | 'min':-1
     matrix_A = parser.get_matrix(matrix='a')
     matrix_b = parser.get_matrix(matrix='B')
+    # And so on
+
+    # Otherwise, get all matrices at once.
+    # Keys are : A,b,c,Eqin & MinMax
+    matrices = parser.get_matrices()
+    matrix_A = matrices['A']
     # And so on
 ```
 
