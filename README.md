@@ -1,5 +1,5 @@
 # ![Aplos](res/aplos_logo.png?raw=true "Aplos")  
-[![Build Status](https://travis-ci.org/TsimpDim/Aplos.svg?branch=master)](https://travis-ci.org/TsimpDim/Aplos) [![Coverage Status](https://coveralls.io/repos/github/TsimpDim/Aplos/badge.svg?branch=detect-errors-func)](https://coveralls.io/github/TsimpDim/Aplos?branch=detect-errors-func) 
+[![Build Status](https://travis-ci.org/TsimpDim/Aplos.svg?branch=master)](https://travis-ci.org/TsimpDim/Aplos) [![Coverage Status](https://coveralls.io/repos/github/TsimpDim/Aplos/badge.svg?branch=master)](https://coveralls.io/github/TsimpDim/Aplos?branch=master)
 
 Aplos is a simple and elegant linear problem(LP) parser. It allows one to get all the information they need about any linear problem given with the correct syntax. You can read more about Linear Programming [here.](https://en.wikipedia.org/wiki/Linear_programming)
 
