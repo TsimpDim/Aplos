@@ -324,3 +324,29 @@ class AplosParser:
                     MinMax.append(1) 
 
                 return MinMax            
+
+    def get_matrices(self):
+        '''This function returns a dict containing each and every
+            matrix available from get_matrix. 
+
+            No tests are run for get_matrices() since it is covered but
+            the tests on get_matrix().
+        '''
+
+        if not self.lp_lines:
+            raise EmptyLPException("Given LP is empty. Can't calculate matrices.")
+
+        if not self.error_list and self.constr_end_idx == -1:
+            raise LPErrorException("Given LP may contain errors. Search for errors first.")
+        
+        elif self.error_list and self.constr_end_idx != -1:
+            raise LPErrorException("Given LP contains errors. Can't get dimensions")
+       
+        else:
+            m_A = self.get_matrix(matrix='a')
+            m_b = self.get_matrix(matrix='b')
+            m_c = self.get_matrix(matrix='c')
+            m_Eqin = self.get_matrix(matrix='Eqin')
+            m_minMax = self.get_matrix(matrix='minmax')
+
+            return {'A':m_A, 'b':m_b, 'c':m_c, 'Eqin':m_Eqin, 'MinMax':m_minMax}
