@@ -78,6 +78,12 @@ if not errors:
     matrix_A = parser.get_matrix(matrix='a')
     matrix_b = parser.get_matrix(matrix='B')
     # And so on
+
+    # Otherwise, get all matrices at once.
+    # Keys are : A,b,c,Eqin & MinMax
+    matrices = parser.get_matrices()
+    matrix_A = matrices['A']
+    # And so on
 ```
 
 
