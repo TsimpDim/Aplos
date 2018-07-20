@@ -352,7 +352,22 @@ class AplosParser:
             return {'A':m_A, 'b':m_b, 'c':m_c, 'Eqin':m_Eqin, 'MinMax':m_minMax}
 
     def write_matrices_to_file(self, path):
-        def format_string(name,matrix):
+        '''This function uses the nested function format_string()
+           to turn all available matrices into strings and then
+           save them to the specified `path`.
+        '''
+
+        def format_string(name, matrix):
+            '''format_string() turns the given matrix into a string.
+
+               `name` is the name of the given matrix and 
+               `matrix` is the matrix itself.
+
+               `name` is used to label the matrix.
+
+               This function is built to work with both 1D and 2D lists/matrices.
+            '''
+            
             matrix_string = name +'=['
             if isinstance(matrix, list):
                 for i,el in enumerate(matrix):
