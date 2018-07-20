@@ -4,3 +4,5 @@ __pycache__
 .vscode
 .coverage
 Aplos.egg-info
+build
+dist

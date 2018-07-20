@@ -5,9 +5,9 @@ Aplos is a simple and elegant linear problem(LP) parser. It allows one to get al
 
 #### Expected LP format
 
->min/max c<sup>t</sup>x  
+>min/max c<sup>T</sup>x  
 >
->s.t /st /s.t./ Ax ⊗ b  
+>s.t /st /s.t. /subjectto Ax ⊗ b  
 >
 >End
 
@@ -85,6 +85,9 @@ if not errors:
     matrices = parser.get_matrices()
     matrix_A = matrices['A']
     # And so on
+
+    # Save matrices to file
+    parser.write_matrices_to_file('output.txt')
 ```
 
 
