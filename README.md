@@ -7,7 +7,7 @@ Aplos is a simple and elegant linear problem(LP) parser. It allows one to get al
 
 >min/max c<sup>T</sup>x  
 >
->s.t /st /s.t. /subjectto Ax ⊗ b  
+>s.t /st /s.t. /subject to Ax ⊗ b  
 >
 >End
 
