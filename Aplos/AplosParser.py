@@ -350,3 +350,51 @@ class AplosParser:
             m_minMax = self.get_matrix(matrix='minmax')
 
             return {'A':m_A, 'b':m_b, 'c':m_c, 'Eqin':m_Eqin, 'MinMax':m_minMax}
+
+    def write_matrices_to_file(self, path):
+        def format_string(name,matrix):
+            matrix_string = name +'=['
+            if isinstance(matrix, list):
+                for i,el in enumerate(matrix):
+                    if i == len(matrix) - 1:
+                        matrix_string += str(el)
+                    else:
+                        matrix_string += str(el) + '\n'
+            else:
+                for row in matrix:
+                    row_string = ' '.join(str(el) for el in row)
+                    if row == matrix[-1]:
+                        matrix_string += row_string
+                    else:
+                        matrix_string += row_string + '\n'
+
+            matrix_string += ']\n\n'
+            return matrix_string
+
+        if not self.lp_lines:
+            raise EmptyLPException("Given LP is empty. Can't calculate matrices.")
+
+        if not self.error_list and self.constr_end_idx == -1:
+            raise LPErrorException("Given LP may contain errors. Search for errors first.")
+        
+        elif self.error_list and self.constr_end_idx != -1:
+            raise LPErrorException("Given LP contains errors. Can't calculate matrices.")
+        
+
+        with open(path, 'w') as lp2f:
+
+            m = self.get_matrices()
+
+            A_string = format_string('A', m['A'])
+            lp2f.write(A_string)
+
+            b_string = format_string('b', m['b'])
+            lp2f.write(b_string)
+            
+            c_string = format_string('c', m['c'])
+            lp2f.write(c_string)
+
+            eqin_string = format_string('Eqin', m['Eqin'])
+            lp2f.write(eqin_string)
+
+            lp2f.write(format_string('MinMax', m['MinMax']))
