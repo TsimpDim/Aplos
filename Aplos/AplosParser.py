@@ -413,3 +413,80 @@ class AplosParser:
             lp2f.write(eqin_string)
 
             lp2f.write(format_string('MinMax', m['MinMax']))
+
+    def get_dual_matrix(self, matrix=None):
+        '''This function calculates and returns the specified matrix
+           of the dual form of the LP.
+
+           Rules:
+            * A gets transposed
+            * b & c get swapped
+            * min becomes max
+            * from min to max, if x(i)>=0 : constraint(i)<=0 and vice versa
+            * if constraint(i) is '='  : w(i) is 'free'
+              if constraint(i) is '>=' : w(i) is '>= 0'
+              if constraint(i) is '<=' : w(i) is '<= 0'
+        '''
+
+        if not matrix:
+            raise MissingArgumentsException("Cannot calculate default 'None' matrix.\
+             Desired matrix must be specified via the 'matrix' keyword.")
+
+        if not self.lp_lines:
+            raise EmptyLPException("Given LP is empty. Can't calculate matrices.")
+
+        if not self.error_list and self.constr_end_idx == -1:
+            raise LPErrorException("Given LP may contain errors. Search for errors first.")
+        
+        elif self.error_list and self.constr_end_idx != -1:
+            raise LPErrorException("Given LP contains errors. Can't calculate matrices.")
+       
+        else:
+
+            if matrix.lower() == 'a':
+                return [list(i) for i in zip(*self.get_matrix(matrix='A'))]
+            
+            elif matrix.lower() == 'b':
+                return self.get_matrix(matrix='c')
+            elif matrix.lower() == 'c':
+                return self.get_matrix(matrix='b')
+            
+            elif matrix.lower() == 'minmax':
+                if self.get_matrix(matrix='minmax') == 1 : return [-1]
+                else: return [1]
+
+            elif matrix.lower() == 'eqin':
+                # Build Eqin assuming that x(i) >= 0 for every i
+                if self.get_matrix(matrix='minmax')[0] == '-1':
+                    # Every constraint will be <=
+                    base_str = '-1, ' * len(self.get_matrix(matrix='a')[0])
+
+                    # [:-2] -> We ignore the last element since it will 
+                    # always be empty due to the way base_str is built
+                    return base_str[:-2].split(',') 
+                else:
+                    # Every constraint will be >=
+                    base_str = '1, ' * len(self.get_matrix(matrix='a')[0])
+                    return  base_str[:-2].split(',')
+            
+            elif matrix.lower() == 'var_constr':
+                # Find new variable restrictions
+                var_constr = []
+                if self.get_matrix(matrix='min_max')[0] == '1':
+                    for constr in self.get_matrix(matrix='eqin'): # For every constraint
+                        if constr == '0':
+                            var_constr.append('0')
+                        elif constr == '-1':
+                            var_constr.append('1')
+                        else:
+                            var_constr.append('-1')
+                else:
+                    for constr in self.get_matrix(matrix='eqin'): # For every constraint
+                        if constr == '0':
+                            var_constr.append('0')
+                        elif constr == '-1':
+                            var_constr.append('-1')
+                        else:
+                            var_constr.append('1')
+
+                return var_constr
