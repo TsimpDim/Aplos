@@ -495,3 +495,18 @@ class AplosParser:
                             var_constr.append('1')
 
                 return [int(i) for i in var_constr]
+
+    def get_dual_matrices(self):
+        '''This function works the same way as get_matrices().
+           Similarly, it returns all the dual matrices in a dict.
+        '''
+
+        d_A = self.get_dual_matrix('a')
+        d_b = self.get_dual_matrix('b')
+        d_c = self.get_dual_matrix('c')
+        d_Eqin = self.get_dual_matrix('Eqin')
+        d_minMax = self.get_dual_matrix('minmax')
+        d_var_cons = self.get_dual_matrix('var_constr')
+
+
+        return {'A':d_A, 'b':d_b, 'c':d_c, 'Eqin':d_Eqin, 'MinMax':d_minMax, 'VarConstr': d_var_cons}
