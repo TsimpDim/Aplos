@@ -28,9 +28,9 @@ Examples:
     
  2. min 3x1 - 5x2 + x4  
  	st x2 + x3 = 2  
-       2x1 + 3x2 + 5x4 >= 5  
-       x1 - 5x2 + 2x3 - 4x4 <= 10  
-       END
+    2x1 + 3x2 + 5x4 >= 5  
+    x1 - 5x2 + 2x3 - 4x4 <= 10  
+    END
        
 ## Usage
 ``` python
@@ -76,8 +76,8 @@ if not errors:
     # Eqin and MinMax have values corresponding to symbols
     # Eqin -- '<=': -1 | '>=' : 1 | '=' : 0
     # MinMax -- 'max':1 | 'min':-1
-    matrix_A = parser.get_matrix(matrix='a')
-    matrix_b = parser.get_matrix(matrix='B')
+    matrix_A = parser.get_matrix('a')
+    matrix_b = parser.get_matrix('B')
     # And so on
 
     # Otherwise, get all matrices at once.
@@ -88,6 +88,15 @@ if not errors:
 
     # Save matrices to file
     parser.write_matrices_to_file('output.txt')
+
+    # Get dual matrices
+    # Variable constraints -- 'free' : 0 | '>= 0' : 1 | '<= 0' : -1}
+    dual_A = parser.get_dual_matrix('a')
+
+    # Variable constraints are calculated assuming that x(i) >= 0
+    # for every i. This is subject to change.
+    dual_var_constr = parser.get_dual_matrix('var_constr')
+    # And so on
 ```
 
 
