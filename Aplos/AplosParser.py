@@ -452,7 +452,7 @@ class AplosParser:
                 return self.get_matrix(matrix='b')
             
             elif matrix.lower() == 'minmax':
-                if self.get_matrix(matrix='minmax') == 1 : return [-1]
+                if self.get_matrix(matrix='minmax') == [1] : return [-1]
                 else: return [1]
 
             elif matrix.lower() == 'eqin':
@@ -463,16 +463,21 @@ class AplosParser:
 
                     # [:-2] -> We ignore the last element since it will 
                     # always be empty due to the way base_str is built
-                    return base_str[:-2].split(',') 
+                    new_eqin = base_str[:-2].split(',') 
+                    new_eqin = [int(i) for i in new_eqin]
+
                 else:
                     # Every constraint will be >=
                     base_str = '1, ' * len(self.get_matrix(matrix='a')[0])
-                    return  base_str[:-2].split(',')
+                    new_eqin = base_str[:-2].split(',') 
+                    new_eqin = [int(i) for i in new_eqin]
+
+                return new_eqin
             
             elif matrix.lower() == 'var_constr':
                 # Find new variable restrictions
                 var_constr = []
-                if self.get_matrix(matrix='min_max')[0] == '1':
+                if self.get_matrix(matrix='minmax')[0] == '1':
                     for constr in self.get_matrix(matrix='eqin'): # For every constraint
                         if constr == '0':
                             var_constr.append('0')
@@ -481,7 +486,7 @@ class AplosParser:
                         else:
                             var_constr.append('-1')
                 else:
-                    for constr in self.get_matrix(matrix='eqin'): # For every constraint
+                    for constr in self.get_matrix(matrix='eqin'):
                         if constr == '0':
                             var_constr.append('0')
                         elif constr == '-1':
@@ -489,4 +494,4 @@ class AplosParser:
                         else:
                             var_constr.append('1')
 
-                return var_constr
+                return [int(i) for i in var_constr]
