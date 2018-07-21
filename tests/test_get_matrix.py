@@ -10,7 +10,7 @@ def test_get_matrix_empty():
 
         with pytest.raises(exceptions.EmptyLPException):
             if not parser.detect_errors():
-                A = parser.get_matrix(matrix='A')
+                A = parser.get_matrix('A')
 
 def test_get_matrix_no_arg():
     
@@ -31,7 +31,7 @@ def test_get_matrix_errors():
 
     parser = AplosParser(filename=test_file)
     with pytest.raises(exceptions.LPErrorException):
-        A = parser.get_matrix(matrix='A')
+        A = parser.get_matrix('A')
 
 def test_get_matrix():
 
@@ -41,11 +41,11 @@ def test_get_matrix():
 
     parser = AplosParser(filename=test_file)
     if not parser.detect_errors():
-        A = parser.get_matrix(matrix='A')
-        b = parser.get_matrix(matrix='b')
-        c = parser.get_matrix(matrix='c')
-        Eqin = parser.get_matrix(matrix='EQin')
-        minmax = parser.get_matrix(matrix='minMAX')
+        A = parser.get_matrix('A')
+        b = parser.get_matrix('b')
+        c = parser.get_matrix('c')
+        Eqin = parser.get_matrix('EQin')
+        minmax = parser.get_matrix('minMAX')
 
         expected_A = [[1,2],[2,5]]
         expected_b = [9,4]

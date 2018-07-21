@@ -10,7 +10,7 @@ def test_get_dual_matrix_empty():
 
         with pytest.raises(exceptions.EmptyLPException):
             if not parser.detect_errors():
-                A = parser.get_dual_matrix(matrix='A')
+                A = parser.get_dual_matrix('A')
 
 def test_get_matrix_no_arg():
     
@@ -31,7 +31,7 @@ def test_get_matrix_errors():
 
     parser = AplosParser(filename=test_file)
     with pytest.raises(exceptions.LPErrorException):
-        A = parser.get_dual_matrix(matrix='A')
+        A = parser.get_dual_matrix('A')
 
 def test_get_matrix():
 
@@ -41,12 +41,12 @@ def test_get_matrix():
 
     parser = AplosParser(filename=test_file)
     if not parser.detect_errors():
-        A = parser.get_dual_matrix(matrix='A')
-        b = parser.get_dual_matrix(matrix='b')
-        c = parser.get_dual_matrix(matrix='c')
-        Eqin = parser.get_dual_matrix(matrix='EQin')
-        minmax = parser.get_dual_matrix(matrix='minMAX')
-        var_constr = parser.get_dual_matrix(matrix='var_constr')
+        A = parser.get_dual_matrix('A')
+        b = parser.get_dual_matrix('b')
+        c = parser.get_dual_matrix('c')
+        Eqin = parser.get_dual_matrix('EQin')
+        minmax = parser.get_dual_matrix('minMAX')
+        var_constr = parser.get_dual_matrix('var_constr')
 
         expected_A = [[1,2],[2,5]]
         expected_b = [3,2]
