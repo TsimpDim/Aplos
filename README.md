@@ -97,6 +97,12 @@ if not errors:
     # for every i. This is subject to change.
     dual_var_constr = parser.get_dual_matrix('var_constr')
     # And so on
+
+    # You can also get all the dual matrices together
+    # Similarly keys are : A,b,c,Eqin,MinMax & VarConstr
+    dual_matrices = parser.get_dual_matrices()
+    dual_A = dual_matrices['A']
+    # And so on
 ```
 
 
