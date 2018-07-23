@@ -351,10 +351,12 @@ class AplosParser:
 
             return {'A':m_A, 'b':m_b, 'c':m_c, 'Eqin':m_Eqin, 'MinMax':m_minMax}
 
-    def write_matrices_to_file(self, path):
+    def write_matrices_to_file(self, path, dual=False):
         '''This function uses the nested function format_string()
            to turn all available matrices into strings and then
            save them to the specified `path`.
+
+           To save the dual matrices set dual=True.
         '''
 
         def format_string(name, matrix):
@@ -398,7 +400,8 @@ class AplosParser:
 
         with open(path, 'w') as lp2f:
 
-            m = self.get_matrices()
+            if dual: m = self.get_dual_matrices()
+            else : m = self.get_matrices()
 
             A_string = format_string('A', m['A'])
             lp2f.write(A_string)
@@ -413,6 +416,13 @@ class AplosParser:
             lp2f.write(eqin_string)
 
             lp2f.write(format_string('MinMax', m['MinMax']))
+
+            if dual:
+                constr = {0:'free', 1:'>= 0', -1:'<= 0'}
+
+                for i,el in enumerate(m['VarConstr']):
+                    lp2f.write("w_{0} {1}\n".format(i+1, constr[int(el)]))
+                        
 
     def get_dual_matrix(self, matrix=None):
         '''This function calculates and returns the specified matrix
