@@ -103,6 +103,9 @@ if not errors:
     dual_matrices = parser.get_dual_matrices()
     dual_A = dual_matrices['A']
     # And so on
+
+    # Save dual matrices to file
+    parser.write_matrices_to_file('output.txt', dual=True)
 ```
 
 
