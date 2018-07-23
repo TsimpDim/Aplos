@@ -6,3 +6,4 @@ __pycache__
 Aplos.egg-info
 build
 dist
+tests/files/output_tests
