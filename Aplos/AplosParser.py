@@ -549,7 +549,7 @@ class AplosParser:
                 end_of_el = min(next_bracket, next_newline) - 1
 
                 if char == '-' or char.isdigit(): # If char is number
-                    matrix.append(factor_string[i:end_of_el + 1])
+                    matrix.append(int(factor_string[i:end_of_el + 1]))
                     i = end_of_el + 1
                 
                 i += 1
@@ -599,7 +599,6 @@ class AplosParser:
         # Find b matrix
         b = []
         extract_one_dim_matrix(r'b=.*?\]\n', b)
-        
 
         # Find c matrix
         c = []
@@ -611,6 +610,7 @@ class AplosParser:
 
         # Find MinMax
         min_max = r.findall(r'(?<=MinMax=\[)[-+]?\d', text)
+        min_max[0] = int(min_max[0])
 
 
         return{'A' : A, 'b' : b, 'c' : c, 'Eqin' : eqin, 'MinMax' : min_max}
