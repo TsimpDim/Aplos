@@ -6,3 +6,6 @@ class EmptyLPException(Exception):
 
 class LPErrorException(Exception):
     pass
+
+class LPReadException(Exception):
+    pass
