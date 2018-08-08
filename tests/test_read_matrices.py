@@ -32,3 +32,14 @@ def test_open_file_non_existing():
 
     with pytest.raises(IOError):
         matrices = parser.read_matrices_from_file('a_path')
+
+def test_open_file_error():
+    FILE_NAME = 'main_lp.txt'
+    CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+    test_file = os.path.join(CUR_DIR, 'files/'+FILE_NAME)
+    output_file = os.path.join(CUR_DIR, 'files/output_tests/output_wrong.txt')
+
+    parser = AplosParser(filename=test_file)
+
+    with pytest.raises(exceptions.LPReadException):
+        matrices = parser.read_matrices_from_file(output_file)
