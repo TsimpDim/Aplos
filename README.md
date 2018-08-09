@@ -105,11 +105,14 @@ if not errors:
     # And so on
 
     # Save dual matrices to file
-    parser.write_matrices_to_file('output.txt', dual=True)
+    parser.write_matrices_to_file('output_dual.txt', dual=True)
 
 
     # After saving matrices (non-dual), you can also read them back
     saved_matrices = parser.read_matrices_from_file('output.txt')
+
+    # If dual
+    saved_d_matrices = parser.read_matrices_from_file('output_dual.txt')
     
 ```
 
