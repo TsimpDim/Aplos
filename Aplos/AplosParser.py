@@ -423,7 +423,6 @@ class AplosParser:
                 for i,el in enumerate(m['VarConstr']):
                     lp2f.write("w_{0} {1}\n".format(i+1, constr[int(el)]))
                         
-
     def get_dual_matrix(self, matrix=None):
         '''This function calculates and returns the specified matrix
            of the dual form of the LP.
@@ -520,3 +519,98 @@ class AplosParser:
 
 
         return {'A':d_A, 'b':d_b, 'c':d_c, 'Eqin':d_Eqin, 'MinMax':d_minMax, 'VarConstr': d_var_cons}
+
+    def read_matrices_from_file(self, path):
+        def extract_one_dim_matrix(regex, matrix):
+            """This inner function returns a 1D matrix read from the specified
+               path.
+
+               It uses a unique regex for every matrix to get a string which
+               contains the matrix in raw form. 
+               
+               Then, to get only the contents of
+               the matrix, it finds the first (min) possible break points (next_x)
+               and if the current element in the loop is a number it appends it to the
+               matrix - which will then be returned.
+            """
+
+            factor_string = r.findall(regex, text, flags=r.S)
+            if not factor_string:
+                raise LPReadException ("Aplos couldn't read the matrices correctly.")
+
+            factor_string = factor_string[0]
+
+            i = 0
+            while i < len(factor_string):
+                char = factor_string[i]
+                next_newline = factor_string.find('\n', i)
+                next_bracket = factor_string.find(']', i)
+
+                end_of_el = min(next_bracket, next_newline) - 1
+
+                if char == '-' or char.isdigit(): # If char is number
+                    matrix.append(int(factor_string[i:end_of_el + 1]))
+                    i = end_of_el + 1
+                
+                i += 1
+        
+        def read_file(path):
+            with open(path, 'r') as lp_file:
+                return lp_file.read()
+        
+
+        text = read_file(path)
+
+        # Extract 'A' matrix
+        # The code here is almost exactly the same
+        # as extract_one_dim_matrix() but the differences were enough
+        # to not make it an extra case in the function.
+        factor_string = r.findall(r'A=.*?\]\]\n', text, flags=r.S)
+        if not factor_string:
+            raise LPReadException ("Aplos couldn't read the matrices correctly.")
+        factor_string = factor_string[0]
+
+        row_amount = factor_string.count('\n')
+        A = [[] for _ in range(row_amount)] # Initialize with appropriate rows
+        cur_row = 0
+        i = 0
+        while i < len(factor_string):
+            char = factor_string[i]
+            next_comma = factor_string.find(',', i)
+            next_bracket = factor_string.find(']', i)
+            next_space = factor_string.find(' ', i)
+
+            end_of_el = min(next_comma, next_bracket) - 1
+            if end_of_el < 0 : end_of_el = next_bracket - 1
+
+            if char == '-' or char.isdigit(): # If char is number (neg/pos)
+                A[cur_row].append(int(factor_string[i:end_of_el + 1]))
+
+                if next_space == -1: # If there aren't any more spaces
+                    break
+                else:
+                    i = min(next_space, next_bracket) # In case this is the last element - so we don't skip elements
+            
+            elif char =='\n':
+                cur_row += 1
+
+            i += 1
+
+        # Find b matrix
+        b = []
+        extract_one_dim_matrix(r'b=.*?\]\n', b)
+
+        # Find c matrix
+        c = []
+        extract_one_dim_matrix(r'c=.*?\]\n', c)
+
+        # Find Eqin matrix
+        eqin = []
+        extract_one_dim_matrix(r'Eqin=.*?\]\n', eqin)
+
+        # Find MinMax
+        min_max = r.findall(r'(?<=MinMax=\[)[-+]?\d', text)
+        min_max[0] = int(min_max[0])
+
+
+        return{'A' : A, 'b' : b, 'c' : c, 'Eqin' : eqin, 'MinMax' : min_max}
