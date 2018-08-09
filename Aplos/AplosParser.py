@@ -520,7 +520,7 @@ class AplosParser:
 
         return {'A':d_A, 'b':d_b, 'c':d_c, 'Eqin':d_Eqin, 'MinMax':d_minMax, 'VarConstr': d_var_cons}
 
-    def read_matrices_from_file(self, path):
+    def read_matrices_from_file(self, path, dual=False):
         def extract_one_dim_matrix(regex, matrix):
             """This inner function returns a 1D matrix read from the specified
                path.
@@ -612,5 +612,18 @@ class AplosParser:
         min_max = r.findall(r'(?<=MinMax=\[)[-+]?\d', text)
         min_max[0] = int(min_max[0])
 
+        # Find variable constraints
+        constraints = r.findall(r'(?<=w\_).*?\n', text)
+        var_constr = []
+        for con in constraints:
+            if '>=' in con:
+                var_constr.append(1)
+            elif '<=' in con:
+                var_constr.append(-1)
+            else:
+                var_constr.append(0)
 
-        return{'A' : A, 'b' : b, 'c' : c, 'Eqin' : eqin, 'MinMax' : min_max}
+        if dual:
+            return{'A' : A, 'b' : b, 'c' : c, 'Eqin' : eqin, 'MinMax' : min_max, 'VarConstr':var_constr} 
+        else:
+            return{'A' : A, 'b' : b, 'c' : c, 'Eqin' : eqin, 'MinMax' : min_max}
