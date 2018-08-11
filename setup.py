@@ -1,11 +1,21 @@
+import setuptools
 
-from setuptools import setup,find_packages
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
-setup(name='Aplos',
-      version='1.0',
-      description='Python Linear Problem Parser',
-      author='Tsimpitas Dimitris',
-      author_email='dimitristsimpitas@gmail.com',
-      url='https://www.github.com/TsimpDim/Aplos',
-      packages=find_packages()
-     )
+setuptools.setup(
+    name="Aplos",
+    version="1.1",
+    author="Tsimpitas Dimitris",
+    author_email="dimitristsimpitas@gmail.com",
+    description="A Linear Problem parser",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/TsimpDim/Aplos",
+    packages=setuptools.find_packages(),
+    classifiers=(
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: OS Independent",
+    ),
+)
