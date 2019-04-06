@@ -112,7 +112,7 @@ if not errors:
     saved_matrices = parser.read_matrices_from_file('output.txt')
 
     # If dual
-    saved_d_matrices = parser.read_matrices_from_file('output_dual.txt')
+    saved_d_matrices = parser.read_matrices_from_file('output_dual.txt', dual=True)
     
 ```
 
